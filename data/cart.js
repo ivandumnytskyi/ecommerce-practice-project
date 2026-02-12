@@ -1,23 +1,22 @@
-const cart = []
-document.querySelectorAll('.js-add-to-cart')
-  .forEach((button)=>{
-    button.addEventListener('click',()=>{
-      const id = button.dataset.productId
-      let matchItem;
-      
+export const cart = []
+
+/*updating items in cart by eventlistener 
+on buttons*/
+export function addToCart(id){
+  let matchItem;
+      const quantityBuId = Number(document.querySelector(`.js-selector-${id}`).value)
       cart.forEach((cartProduct) =>{
         if (id === cartProduct.productId){
           matchItem = cartProduct;
         }});
 
         if (matchItem){
-          matchItem.quantity += 1
+          matchItem.quantity += quantityBuId
         }else{
           cart.push({
             productId : id,
-            quantity : 1
+            quantity : quantityBuId
           });
         }
-        console.log(cart)
-      })
-  })
+
+}
