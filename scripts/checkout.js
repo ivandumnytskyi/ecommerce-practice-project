@@ -110,7 +110,15 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
     })
 
     
-    let shipping = 499 
+    let shipping = 0;
+    cart.forEach(cartItem =>{
+      deliveryOptions.forEach(option =>{
+        if(option.id === cartItem.deliveryId){
+          shipping +=option.priceCents
+        }
+      }) 
+
+    })
     let paymantSummaryHTML =`
     <div class="payment-summary-title">
                 Order Summary
