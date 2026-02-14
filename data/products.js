@@ -663,6 +663,20 @@
 
 export let products = [];
 
+export function loadFatch(){
+  const promise = fetch(
+    'https://supersimplebackend.dev/products'
+  ).then((response)=> {
+    return response.json()
+  })
+  .then((prusuctsData) => {
+    products = prusuctsData
+  })
+
+  return promise
+}
+
+/*
 export function loadProducts(func){
   let xhr = new XMLHttpRequest()
 
@@ -674,5 +688,5 @@ export function loadProducts(func){
   xhr.open('GET', 'https://supersimplebackend.dev/products')
   xhr.send()
 }
-
+*/
 
