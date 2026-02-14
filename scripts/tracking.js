@@ -1,6 +1,8 @@
 import {updateQuantity} from '../data/cart.js'
 import { products,loadPage } from '../data/products.js'
 import {orders} from '../data/ordersdata.js'
+import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
+import {deliveryOptions} from '../data/deliveryObj.js'
 
 
 function renderPage(){
@@ -12,14 +14,19 @@ function renderPage(){
   let thisQuantity;
   let deliveryDate;
   orders.forEach(order =>{
-    if (order.id=== parameters.order){
+    if (order.id === Number(parameters.order)){
       order.products.forEach(product =>{
         if (product.productId === parameters.product){
           thisQuantity = product.quantity;
-          deliveryDate = new Date(product.estimatedDeliveryTime)
-            .toLocaleDateString("en-US", 
-              { month: "long", day: "numeric" }
-            )
+          let deliveryOption
+          deliveryOptions.forEach(option =>{
+            if (product.deliveryId === option.id){
+              deliveryOption = option
+            }
+          })
+          deliveryDate = dayjs(order.orderDate)
+            .add(deliveryOption.deliveryDays, 'days')
+            .format('MMMM D');
         }
       })
     }

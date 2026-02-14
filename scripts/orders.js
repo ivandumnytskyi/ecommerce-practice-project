@@ -1,6 +1,8 @@
 import {orders} from '../data/ordersdata.js'
 import { products,loadPage } from '../data/products.js'
 import { updateQuantity } from '../data/cart.js'
+import {deliveryOptions} from '../data/deliveryObj.js'
+import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
 
 function createOrdersHTML(){
   updateQuantity()
@@ -15,6 +17,13 @@ function createOrdersHTML(){
           matchProduct = fullInfo;
         }
       })
+
+      let deliveryOption;
+      deliveryOptions.forEach(option =>{
+        if (item.deliveryId === option.id){
+          deliveryOption = option
+        }
+      })
       detailsHTML += `
         <div class="product-image-container">
                 <img src="${matchProduct.image}">
@@ -25,10 +34,10 @@ function createOrdersHTML(){
                   ${matchProduct.name}
                 </div>
                 <div class="product-delivery-date">
-                  ${new Date(item.estimatedDeliveryTime)
-                  .toLocaleDateString("en-US", 
-                    { month: "long", day: "numeric" }
-                  )}
+                  ${dayjs(order.orderDate)
+                    .add(deliveryOption.deliveryDays, 'days')
+                    .format('MMMM D')
+                  }
                 </div>
                 <div class="product-quantity">
                   Quantity: ${item.quantity}
@@ -56,14 +65,14 @@ function createOrdersHTML(){
               <div class="order-header-left-section">
                 <div class="order-date">
                   <div class="order-header-label">Order Placed:</div>
-                  <div>${new Date(order.orderTime)
+                  <div>${new Date(order.orderDate)
                   .toLocaleDateString("en-US", 
                     { month: "long", day: "numeric" }
                   )}</div>
                 </div>
                 <div class="order-total">
                   <div class="order-header-label">Total:</div>
-                  <div>$${(order.totalCostCents/100).toFixed(2)}</div>
+                  <div>$${(order.priceCents/100).toFixed(2)}</div>
                 </div>
               </div>
 

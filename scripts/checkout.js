@@ -2,7 +2,7 @@ import { cart, removeFromCart, changeDeliveryOption } from "../data/cart.js"
 import { products, loadPage } from "../data/products.js"
 import {deliveryOptions} from "../data/deliveryObj.js"
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
-import {addOrder} from '../data/ordersdata.js'
+import {addOrder, orders} from '../data/ordersdata.js'
 
 
 loadPage(renderPage)
@@ -164,7 +164,44 @@ loadPage(renderPage)
       .innerHTML = paymantSummaryHTML
 
     document.querySelector('.return-to-home-link')
-      .innerHTML = `${countItems} items`}
+      .innerHTML = `${countItems} items`
+    
+    document.querySelector('.js-place-order')
+    .addEventListener('click', /*async*/ ()=>{
+      // try{
+        // const response = await fetch('https://supersimplebackend.dev/orders',
+        // {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body: JSON.stringify({
+        //     cart: cart
+        //   })
+        // })
+        
+        // const order = await response.json()
+        let lastId;
+        if (!localStorage.getItem('orders')){
+          lastId =0
+        }else{
+          lastId = orders[0].id
+        }
+        let order = {
+          products: cart,
+          id: lastId + 1,
+          priceCents: (fullPrise+shipping+Number(((fullPrise+shipping)/10).toFixed())),
+          orderDate: dayjs()
+        }
+        addOrder(order)
+        localStorage.removeItem('cart')
+      // }catch (error){
+      //   alert('Unexpected eror. Try again later.')
+      // }
+      
+      window.location.href = 'orders.html'
+    })
+  }
 
 
 
@@ -208,27 +245,5 @@ loadPage(renderPage)
 
   summury()
 
-  document.querySelector('.js-place-order')
-    .addEventListener('click', async ()=>{
-      try{
-        const response = await fetch('https://supersimplebackend.dev/orders',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            cart: cart
-          })
-        })
-        
-        const order = await response.json()
-        addOrder(order)
-        localStorage.removeItem('cart')
-      }catch (error){
-        alert('Unexpected eror. Try again later.')
-      }
-      
-      window.location.href = 'orders.html'
-    });
+  
 }
