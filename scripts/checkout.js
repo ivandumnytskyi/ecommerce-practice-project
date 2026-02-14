@@ -1,10 +1,9 @@
 import { cart, removeFromCart, changeDeliveryOption } from "../data/cart.js"
-import { products } from "../data/products.js"
+import { products, loadProducts } from "../data/products.js"
 import {deliveryOptions} from "../data/deliveryObj.js"
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
-
+loadProducts(renderPage)
  function renderPage (){let orderSummuryHTML = '';
-
 
   function orderSummery(productInfo,cartProduct){
     const deliveryOptionId = cartProduct.deliveryId
@@ -106,7 +105,7 @@ import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
       }
     })
     countItems += cartProduct.quantity;
-      fullPrise += (cartProduct.quantity * productInfo.priceCents)
+    fullPrise += (cartProduct.quantity * productInfo.priceCents)
     })
 
     
