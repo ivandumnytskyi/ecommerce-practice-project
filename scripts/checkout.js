@@ -2,6 +2,7 @@ import { cart, removeFromCart, changeDeliveryOption } from "../data/cart.js"
 import { products, loadPage } from "../data/products.js"
 import {deliveryOptions} from "../data/deliveryObj.js"
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
+import {addOrder} from '../data/orders.js'
 
 
 loadPage(renderPage)
@@ -153,7 +154,8 @@ loadPage(renderPage)
                 </div>
               </div>
 
-              <button class="place-order-button button-primary">
+              <button class="place-order-button button-primary
+              js-place-order">
                 Place your order
               </button>`
 
@@ -204,4 +206,28 @@ loadPage(renderPage)
       })
     })
 
-  summury()}
+  summury()
+
+  document.querySelector('.js-place-order')
+    .addEventListener('click', async ()=>{
+      try{
+        const response = await fetch('https://supersimplebackend.dev/orders',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            cart: cart
+          })
+        })
+        
+        const order = await response.json()
+        addOrder(order)
+      }catch (error){
+        alert('Unexpected eror. Try again later.')
+      }
+      
+      window.location.href = 'orders.html'
+    });
+}
