@@ -54,3 +54,10 @@ export function changeDeliveryOption(prudictId, deliveryOptionId){
   matchItem.deliveryId = deliveryOptionId
   saveToStorage()
 }
+
+export function updateQuantity (){
+  let cartQuantity = 0;
+  cart.forEach(item => cartQuantity += item.quantity)
+  document.querySelector('.cart-quantity')
+    .innerHTML = `${cartQuantity || ''} `;
+}

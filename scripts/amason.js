@@ -1,13 +1,9 @@
-import { cart, addToCart } from '../data/cart.js';
+import { addToCart, updateQuantity } from '../data/cart.js';
 import { products, loadPage } from '../data/products.js'
 
 loadPage(renderProdGrid)
 
 function renderProdGrid(){
-  function updateQuantity (){let cartQuantity = 0;
-  cart.forEach(item => cartQuantity += item.quantity)
-        document.querySelector('.cart-quantity')
-          .innerHTML = `${cartQuantity}`;}
   updateQuantity()
   /* ganerating our main content 
   and adding it to grid*/

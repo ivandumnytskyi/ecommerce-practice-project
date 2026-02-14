@@ -1,7 +1,10 @@
 import {orders} from '../data/ordersdata.js'
 import { products,loadPage } from '../data/products.js'
+import { updateQuantity } from '../data/cart.js'
 
 function createOrdersHTML(){
+  updateQuantity()
+  
   let ordershtml = '';
   orders.forEach(order => {
     let detailsHTML = '';
@@ -37,7 +40,7 @@ function createOrdersHTML(){
               </div>
 
               <div class="product-actions">
-                <a href="tracking.html">
+                <a href="tracking.html?order=${order.id}&product=${matchProduct.id}">
                   <button class="track-package-button button-secondary">
                     Track package
                   </button>
@@ -78,7 +81,9 @@ function createOrdersHTML(){
   `
   ordershtml+=html
   });
+  if (ordershtml !== ''){
   document.querySelector('.orders-grid')
   .innerHTML = ordershtml
+  }
 }
 loadPage(createOrdersHTML)
